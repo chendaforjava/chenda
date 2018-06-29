@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportMapper">
+	
+	<resultMap type="dept" id="dept">
+		<id column="DEP_ID" property="deptId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="DEP_NAME" property="deptName"/>
+	</resultMap>
+	
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+	</resultMap>
+	
+	<resultMap type="user" id="user2">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+    	<collection property="signList" ofType="sign">
+    		<id column="SIGN_ID" property="signId"/>
+    		<result column="U_ID" property="uId"/>
+    		<result column="SIGN_TIME" property="signTime"/>
+    		<result column="SIGN_OUT" property="signOut"/>
+    	</collection>
+	</resultMap>
+	
+	
+	
+	
+	
+	<select id="selectDeptById" parameterType="java.lang.String" resultMap="dept">
+		select * from tb_dept where DEP_ID = #{deptId}
+	</select>
+	
+	<select id="selectalluser" parameterType="java.util.Map" resultMap="user">
+		select 
+			U_ID,U_NAME,DEP_ID,JOB_NUMBER
+		from 
+			TB_USER
+		where
+			1=1
+		  <if test='deptId!=null and deptId!="0"'>
+				and
+					DEP_ID = #{deptId}
+		  </if>
+	</select>
+	
+	
+	<select id="selectSignList" parameterType="java.util.Map" resultMap="user2">
+		select 
+				t.*
+		 from
+		 		(
+			 		select 
+						u.U_ID,u.DEP_ID,u.U_NAME,u.JOB_NUMBER,s.SIGN_ID,s.SIGN_TIME
+					from
+						TB_USER u
+					left join
+						TB_SIGN s
+					on
+						u.U_ID = s.U_ID
+				)t
+		where
+			t.SIGN_TIME &gt;= #{startDate}
+		and
+			t.SIGN_TIME &lt; #{endDate}
+			
+		 <if test='deptId!=null and deptId!="0"'>
+				and
+					t.DEP_ID = #{deptId}
+		  </if>
+	</select>
+	
+</mapper>

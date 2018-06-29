@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+		<collection property="veinFingerList" ofType="veinfinger">
+    		<id column="VEIN_ID" property="veinId" />
+			<result column="U_ID" property="uId"/>
+			<result column="VEIN_POSITION" property="veinPosition"/>
+			<result column="VEIN_COUNT" property="veinCount"/>
+			<result column="VEIN_COLLENT" property="veinCollectTime"/>
+    	</collection>
+	</resultMap>
+	
+	
+	<resultMap type="user" id="user2">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+	</resultMap>
+	
+	
+
+	<select id="countUser" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			TB_USER
+		WHERE
+			COR_ID = #{corId}
+		<if test="userName != null and userName != ''">
+			AND U_NAME like CONCAT('%',CONCAT(#{userName},'%')) escape '\'
+		</if>
+		<if test="deptId != null and deptId != ''">
+			AND DEP_ID like CONCAT('%',CONCAT(#{deptId},'%')) escape '\'
+		</if>
+	</select>
+	
+	
+	
+	<select id="findePageUser" parameterType="java.util.Map" resultMap="user">
+		select 
+				t.* 
+		from 	
+				(
+					select 
+							u.*,ROWNUM rn 
+					from 
+							(
+								select 
+										a.U_ID,a.U_NAME,a.U_SEX,a.U_PHONE,a.COR_ID,a.U_ADDR,a.U_PROVINCE,
+										a.U_CITY,a.DEP_ID,a.U_VEIN_NUM,a.U_PHOTO_URL,a.JOB_NUMBER,
+										b.VEIN_ID,b.VEIN_POSITION,b.VEIN_COUNT,b.VEIN_COLLENT
+								from 
+										tb_user a  
+								left join 
+										TB_VEINFINGER b
+								on
+										a.U_ID = b.U_ID 
+								<if test="deptId != null and deptId != ''">
+										and a.dep_id like CONCAT('%',CONCAT(#{deptId},'%')) escape '\'
+								</if>
+							)u
+					WHERE ROWNUM &lt;=#{end}
+				)t
+		where 
+				rn &gt;= #{start}
+		and
+				t.cor_id = #{corId}
+		<if test="deptId != null and deptId != ''">
+			and t.dep_id like CONCAT('%',CONCAT(#{deptId},'%')) escape '\'
+		</if>
+		<if test="userName != null and userName != ''">
+			and t.u_name like CONCAT('%',CONCAT(#{userName},'%')) escape '\'
+		</if>
+	</select>
+	
+	
+	<select id="verityUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+			 COUNT(*)
+		FROM
+			TB_USER
+		WHERE
+			JOB_NUMBER = #{userId}
+		AND
+			COR_ID = #{corId}
+	</select>
+	
+	<insert id="saveUser" parameterType="java.util.Map" useGeneratedKeys="false">
+		INSERT INTO TB_USER
+			(U_ID,U_PHOTO_URL,U_NAME,U_SEX,U_PHONE,COR_ID,DEP_ID,JOB_NUMBER)
+		VALUES
+			(#{uId},#{uPhotoUrl},#{name},#{sex},#{phone},#{corId},#{dptno},#{ujobNum})
+	</insert>
+	
+	<update id="changePwd" parameterType="java.util.Map">
+		UPDATE
+				TB_MANAGER
+		SET
+				PASSWORD = #{newpassword}
+		WHERE
+				COR_ID = #{corId}
+		AND
+				MID = #{userName}
+	</update>
+	
+	
+	<update id="modifyUser" parameterType="java.util.Map">
+		UPDATE 
+				TB_USER
+		SET
+				DEP_ID = #{depart},U_NAME = #{name}, U_PHONE = #{phone} 
+				<if test="uPhotoUrl != null"> , U_PHOTO_URL = #{uPhotoUrl}</if>
+		WHERE
+				JOB_NUMBER = #{userId}
+		AND
+				COR_ID = #{corId}
+	</update>
+	
+	
+	<delete id="deluser" parameterType="java.util.Map">
+		delete  from TB_USER where JOB_NUMBER = #{jobNum} and COR_ID = #{corId}
+	</delete>
+	
+	
+	<select id="blurryUsers" parameterType="java.util.Map" resultMap="user">
+	    select a.* from
+	             (
+					select 
+							u.U_ID,u.U_NAME,u.U_SEX,u.U_PHONE,u.COR_ID,u.U_ADDR,u.U_PROVINCE,
+							u.U_CITY,u.DEP_ID,u.U_VEIN_NUM,u.U_PHOTO_URL,u.JOB_NUMBER,
+							v.VEIN_ID,v.VEIN_POSITION,v.VEIN_COUNT
+					from 
+							tb_user u
+					left join
+							TB_VEINFINGER v
+					on
+							u.U_ID = v.U_ID
+				)a
+			where 
+				a.COR_ID = #{corId}
+			<if test="jobNumber != null and jobNumber != ''">
+					and a.JOB_NUMBER like CONCAT('%',CONCAT(#{jobNumber},'%')) escape '\'
+			</if>
+	</select>
+	
+</mapper>

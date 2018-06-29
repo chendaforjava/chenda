@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoginMapper">
+	
+	<!-- 开启缓存 -->
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap type="manager" id="manager">
+		<id column="MAGER_ID" property="magerId" />
+		<result column="COR_ID" property="corId"/>
+		<result column="MID" property="mid"/>
+		<result column="PASSWORD" property="password"/>
+	</resultMap>
+	<resultMap type="corporation" id="corporation">
+		<id column="COR_ID" property="corId"/>
+		<result column="COR_NAME" property="corName"/>
+		<result column="COR_ADDR" property="corAddr"/>
+		<result column="COR_MAIL" property="corMail"/>
+		<result column="COR_TEL" property="corTel"/>
+	</resultMap>
+	
+	
+	<select id="getAllCorporation" resultMap="corporation" useCache="true">
+		SELECT 
+			COR_ID,	COR_NAME,COR_ADDR,COR_MAIL,COR_TEL
+		FROM
+			TB_CORPORATION
+	</select>
+	
+	<select id="findCorporationById" parameterType="java.lang.String" resultMap="corporation">
+		SELECT 
+			COR_ID,	COR_NAME,COR_ADDR,COR_MAIL,COR_TEL
+		FROM
+			TB_CORPORATION
+		where
+			cor_id = #{corId}
+	</select>
+	
+	
+	
+	<select id="findManager" parameterType="java.util.Map" resultMap="manager">
+		SELECT
+				MAGER_ID,COR_ID,MID,PASSWORD
+		FROM
+				TB_MANAGER
+		WHERE
+				MID = #{userName}
+		AND
+				COR_ID = #{coporationId}
+	</select>	
+	
+	
+	<select id="getCorporationByName" parameterType="java.lang.String" resultMap="corporation">
+		SELECT 
+			COR_ID,	COR_NAME,COR_ADDR,COR_MAIL,COR_TEL
+		FROM
+			TB_CORPORATION
+		where
+			COR_NAME = #{corName}
+	</select>
+	
+	
+</mapper>

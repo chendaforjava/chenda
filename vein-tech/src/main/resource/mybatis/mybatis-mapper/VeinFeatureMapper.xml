@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VeinFeatureMapper">
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+	</resultMap>
+	<resultMap type="veinfinger" id="veinfinger">
+		<id column="VEIN_ID" property="veinId"/>
+		<result column="U_ID" property="uId"/>
+		<result column="VEIN_POSITION" property="veinPosition"/>
+		<result column="VEIN_COUNT" property="veinCount"/>
+		<result column="VEIN_COLLENT" property="veinCollectTime"/>
+	</resultMap>
+	
+	<resultMap type="dept" id="dept">
+		<id column="DEP_ID" property="deptId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="DEP_NAME" property="deptName"/>
+	</resultMap>
+	
+	
+	<select id="selectUserById" parameterType="java.util.Map" resultMap="user">
+		select * from tb_user where JOB_NUMBER = #{jobNumber} and COR_ID = #{corId}
+	</select>
+	
+	<select id="findUserById" parameterType="java.lang.String" resultMap="user">
+		select * from tb_user where U_ID = #{uId}
+	</select>
+	
+	<select id="selectVeinFingerByType" parameterType="java.util.Map" resultMap="veinfinger">
+		select 
+				 VEIN_ID,U_ID,VEIN_POSITION,VEIN_COUNT,VEIN_COLLENT
+		from 
+				TB_VEINFINGER
+		where
+				U_ID = #{uId}
+		and
+				VEIN_POSITION = #{veinPosition}
+	</select>
+	
+	<insert id="saveFeature" parameterType="java.util.Map">
+		insert 
+				into  TB_VEINFINGER
+		(VEIN_ID,U_ID,VEIN_POSITION,VEIN_COUNT,VEIN_COLLENT)
+				values
+		(#{bioFeatureId},#{uId},#{veinPosition},#{veinCount},sysdate)
+	</insert>
+	
+	<select id="findAllUsersByCorId" parameterType="java.lang.String" resultMap="user">
+		select * from tb_user where cor_id = #{corId}
+	</select>
+	
+	<select id="findUserByName" parameterType="java.util.Map" resultMap="user">
+		select 	
+				U_ID,U_NAME,U_SEX,U_PHONE,COR_ID,U_ADDR,U_PROVINCE,
+				U_CITY,DEP_ID,U_VEIN_NUM,U_PHOTO_URL,JOB_NUMBER
+		from
+				TB_USER
+		where
+				COR_ID = #{corId}
+		and
+				U_NAME like CONCAT('%',CONCAT(#{name},'%'))  escape '\'
+	</select>
+	
+	
+	<insert id="saveDetilUser" parameterType="java.util.Map" useGeneratedKeys="false">
+		insert 
+				into
+		TB_USER
+				(U_ID,U_NAME,U_SEX,COR_ID,U_ADDR,DEP_ID,U_PHOTO_URL,JOB_NUMBER,ID_NUMBER,TERM_TIME,CARD_AGENCY)
+		VALUES
+				(#{uId},#{name},#{sex},#{corId},#{address},#{deptId},#{uPhotoUrl},#{jobNumber},#{idNumber},#{termTime},#{department})
+		
+	</insert>
+	
+	
+	<select id="selectAllDept" parameterType="java.lang.String" resultMap="dept">
+		select * from tb_dept  where COR_ID = #{corId}
+	</select>
+	
+	
+	
+</mapper>

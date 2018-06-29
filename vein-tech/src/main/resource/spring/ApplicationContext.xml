@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans.xsd  
+http://www.springframework.org/schema/websocket  
+http://www.springframework.org/schema/websocket/spring-websocket.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context.xsd  
+http://www.springframework.org/schema/data/mongo         
+http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd     
+http://www.springframework.org/schema/tx  
+http://www.springframework.org/schema/tx/spring-tx.xsd  
+http://www.springframework.org/schema/aop  
+http://www.springframework.org/schema/aop/spring-aop.xsd  
+http://www.springframework.org/schema/cache  
+http://www.springframework.org/schema/cache/spring-cache.xsd  
+http://activemq.apache.org/schema/core   
+http://activemq.apache.org/schema/core/activemq-core.xsd  
+http://www.springframework.org/schema/jms   
+http://www.springframework.org/schema/jms/spring-jms.xsd  
+http://www.springframework.org/schema/util  
+http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+
+
+	<!-- 启用注解 -->
+	<context:annotation-config />
+
+
+	<context:property-placeholder location="classpath:mybatis/jdbc.properties"
+		ignore-unresolvable="true" />
+	<import resource="classpath*:shiro.xml" />
+	<!-- <import resource="classpath*:activemq.xml" /> -->
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${dataSource.driverClassName}" />
+		<property name="url" value="${dataSource.url}" />
+		<property name="username" value="${dataSource.username}" />
+		<property name="password" value="${dataSource.password}" />
+		<property name="initialSize" value="${dataSource.initialSize}" />
+		<property name="maxActive" value="${dataSource.maxActive}" />
+		<property name="maxWait" value="30000" />
+		<property name="maxIdle" value="${dataSource.maxIdle}" />
+		<property name="minIdle" value="${dataSource.minIdle}" />
+		<property name="testWhileIdle" value="${dataSource.testWhileIdle}" />
+		<property name="testOnBorrow" value="${dataSource.testOnBorrow}" />
+		<property name="testOnReturn" value="${dataSource.testOnReturn}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${dataSource.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${dataSource.minEvictableIdleTimeMillis}" />
+		<property name="poolPreparedStatements" value="${dataSource.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${dataSource.maxPoolPreparedStatementPerConnectionSize}" />
+		<property name="filters" value="${dataSource.filters}" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:mybatis/mybatis-mapper/*.xml"></property>
+	</bean>
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="select" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	
+	<!-- <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcacheManager"/>
+    </bean>
+	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <property name="shared" value="true"></property>
+    </bean> -->
+    
+    <!-- MyBatis使用ehcache缓存 start -->  
+    <bean id="ehCacheManager"  
+        class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">  
+        <property name="configLocation" value="classpath:ehcache.xml" />  
+        <property name="shared" value="true"></property> <!-- 这里是关键！！！没有必错  -->  
+    </bean>  
+    <!-- end MyBatis使用ehcache缓存 -->  
+
+    <!-- 缓存管理器 使用Ehcache实现 -->  
+    <!-- <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">  
+        <property name="cacheManager" ref="ehCacheManager" />  
+    </bean>   -->
+    
+
+</beans>

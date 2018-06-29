@@ -1,0 +1,45 @@
+/*
+公共样式部分
+*/
+*{margin: 0; padding: 0; font-size: 16px; font-family: "微软雅黑";}
+ul,li,ol,img{margin: 0; padding: 0; list-style: none;}
+h1,h2,h3,h4,h5,h6,p,span{margin: 0; padding: 0; font-size: 14px; font-weight: normal;}
+a{color:#3c6873; text-decoration: none;}
+a:hover{ cursor: pointer;}
+.clearfloat{ clear: both;}
+
+/*
+公共样式
+*/
+
+
+#form{ left: 620px; top:300px;width:400px; height:320px;  background: rgba(0,0,0,.5); border-radius:5px; transform:translateX(-50%) }
+#form .biao{border:1px #000 solid; }
+#form input{border: 1px #1b6d85 solid;  }
+#form>label{ color: white}
+
+#form div{ margin:15px 0 15px 15px;}
+
+#logo{width:100%; position: relative; }
+#logo>.tu{ position: absolute;top: 120px; left:50%;transform:translateX(-50%) }
+#logo form{ position: absolute; left:50%}
+
+#dia,#psd,#corporationselect{ height:35px; width: 350px; line-height: 35px; padding-left: 5px;
+    background: rgba(0,0,0,0); color: white; border-radius: 10px;}
+#yz{border-bottom: 1px solid #0094d9; height: 35px; width: 150px;line-height: 35px;
+
+    padding-left: 5px; background: rgba(0,0,0,0); color: white; margin-top: 10px;border-radius: 10px;}
+#form .yz{border:1px solid #0094d9; width: 15%;  margin-left: 15px;line-height: 35px; }
+
+
+#form .button{width:200px; height:45px; ; line-height: 35px; text-align: center; background: rgba(0,0,0,0); border: solid 1px #0094d9; border-radius: 10px;
+color: white;margin-top: 25px;
+}
+#form .button1{ width: 200px; height: 45px;  line-height: 45px;text-align: center;
+    background: rgba(0,0,0,0); border: solid 1px #0094d9; border-radius: 10px; color: white}
+
+#form .button:hover{background-color: #0094d9; cursor: pointer; }
+
+
+
+

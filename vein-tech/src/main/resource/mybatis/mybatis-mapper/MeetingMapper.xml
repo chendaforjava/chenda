@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MeetingMapper">
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+	</resultMap>
+	
+	<resultMap type="user" id="user2">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+		<collection property="veinFingerList" ofType="veinfinger">
+    		<id column="VEIN_ID" property="veinId" />
+			<result column="U_ID" property="uId"/>
+			<result column="VEIN_POSITION" property="veinPosition"/>
+			<result column="VEIN_COUNT" property="veinCount"/>
+			<result column="VEIN_COLLENT" property="veinCollectTime"/>
+    	</collection>
+	</resultMap>
+	
+	
+	<resultMap type="userTemp" id="userTemp">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+		<collection property="signList" ofType="sign">
+    		<id column="SIGN_ID" property="signId"/>
+    		<result column="U_ID" property="uId"/>
+    		<result column="SIGN_TIME" property="signTime"/>
+    		<result column="SCHEDULE_ID" property="scheduleId"/>
+    		<result column="SIGN_OUT" property="signOut"/>
+    	</collection>
+    	<collection property="userScheduleList" ofType="scheduleUser">
+    		<result column="U_ID" property="uId"/>
+			<result column="SCHEDULE_ID" property="scheduleId"/>
+    	</collection>
+	</resultMap>
+	
+	
+	<resultMap type="schedule" id="schedule">
+		<id column="SCHEDULE_ID" property="scheduleId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="SCHEDULE_NAME" property="scheduleName"/>
+		<result column="PARTICIPANT_NUM" property="participantNum"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="START_TIME" property="startTime"/>
+		<result column="END_TIME" property="endTime"/>
+	</resultMap>
+	
+	
+
+	<select id="loadSchudels" parameterType="java.lang.String" resultMap="schedule">
+		select
+				SCHEDULE_ID,COR_ID,SCHEDULE_NAME,PARTICIPANT_NUM,ADDRESS,START_TIME,END_TIME
+		from
+				TB_SCHEDULE
+		where
+				COR_ID = #{corId}
+		and
+				END_TIME  &gt; sysdate
+	</select>
+	
+	
+	
+	<select id="selectDeptUsers" parameterType="java.util.Map" resultMap="user">
+		select 
+				U_ID,U_NAME,COR_ID,DEP_ID,JOB_NUMBER
+		from
+				tb_user
+		where
+				COR_ID = #{corId}
+		<if test="deptId != null and deptId != ''">
+				and DEP_ID like CONCAT('%',CONCAT(#{deptId},'%')) escape '\'
+		</if>
+	</select>
+	
+	<select id="selectUserInfoById" parameterType="java.util.Map" resultMap="user2">
+		select 
+				u.U_ID,u.U_NAME,u.COR_ID,u.JOB_NUMBER,
+				v.VEIN_ID,v.U_ID
+		from
+				TB_USER u,TB_VEINFINGER v
+		where
+				u.U_ID = v.U_ID
+		and
+				u.COR_ID = #{corId}
+		<if test="list.size()!=0">
+			and
+				u.JOB_NUMBER 
+			in
+				<foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+               		 #{item}
+            	</foreach>
+		</if>
+		
+	</select>
+	
+	
+	<insert id="saveSchedule" parameterType="java.util.Map">
+		insert  into TB_SCHEDULE
+		   (SCHEDULE_ID,COR_ID,SCHEDULE_NAME,PARTICIPANT_NUM,ADDRESS,START_TIME,END_TIME)
+		  values
+		   (#{scheduleId},#{corId},#{scheduleName},#{participantNum},#{address},#{startDate},#{endDate})
+	</insert>
+	
+	
+	<insert id="saveScheduleUser" parameterType="java.util.Map" useGeneratedKeys="false">
+		insert into TB_SCHEDULE_USER (U_ID,SCHEDULE_ID)
+			VALUES
+		  (#{uId},#{scheduleId})
+	</insert>
+	
+	<select id="getNoFeatureUsers" parameterType="java.util.Map" resultMap="user">
+		select 
+				U_ID,U_NAME,COR_ID,JOB_NUMBER
+		from
+				TB_USER
+		where
+				COR_ID = #{corId}
+		<if test="list.size()!=0">
+			and
+				JOB_NUMBER 
+			in
+				<foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+               		 #{item}
+            	</foreach>
+		</if>
+	</select>
+	
+	
+	<delete id="deleteSchedule" parameterType="java.util.Map">
+		delete from tb_schedule where SCHEDULE_ID = #{scheduleId}
+	</delete>
+	
+	<select id="selectScheduleUser" parameterType="java.lang.String" resultMap="userTemp">
+		select 
+    		u.U_ID,u.U_NAME ,u.JOB_NUMBER
+		from 
+    		tb_user u,tb_schedule s,tb_schedule_user su
+		where
+    		u.U_ID = su.U_ID
+		and
+    		s.SCHEDULE_ID = su.SCHEDULE_ID
+		and
+    		s.SCHEDULE_ID = #{scheduleId}
+	</select>
+	
+	<select id="selectScheduleUserSign" parameterType="java.lang.String" resultMap="userTemp">
+		select
+			u.U_ID,u.U_NAME,s.SIGN_TIME
+		from
+			tb_user u,tb_sign s
+		where
+			u.U_ID = s.U_ID
+		and
+			s.SCHEDULE_ID = #{scheduleId}
+	</select>
+	
+	
+	<select id="rsyncMeeting" parameterType="java.util.Map" resultMap="schedule">
+		select * from TB_SCHEDULE where COR_ID= #{corId} and END_TIME &gt; sysdate
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,169 @@
+*{margin: 0; padding: 0;}
+img{margin: 0; padding: 0}
+ul,li{list-style: none; margin: 0; padding: 0}
+.hezi{width:85%; margin:0 auto;padding-top: 5%;}
+
+
+
+.xiala{
+    width:100%;
+    height:100%;
+    position: fixed;
+    display: none;
+    top:0;
+    left: 0;
+    /*transform:translateX(-50%);;*/
+    z-index: 1102;}
+
+.xiala .shipin{
+    position: absolute;
+    top: 20%;
+    left: 23%;
+    z-index: 99;
+}
+
+.xiala .xiala2{
+    position: absolute;
+    left: 23%;
+    top:20%;
+    z-index: 100;
+    padding-bottom: 20%;
+    width:55%;
+    color: #060e1b;
+    font-size:1.3em;
+
+    text-align: left;
+    /*transform:translateX(-50%);;*/
+}
+
+.xiala2 .xinxi{
+    color: white;
+    position: absolute;
+    left:8%; top:31.5%;
+    line-height: 50px;
+    z-index: 2000;
+    font-size: 16px;}
+
+.xiala2 .shuju{
+    color: white;
+    text-align: left;
+    line-height: 50px;
+    z-index: 2000}
+
+.xiala2 .shijian{color: white;
+
+    text-align: left;
+    line-height: 50px;
+    z-index: 2000}
+
+.xiala2 .zhuangtai{color: white;
+    position: absolute;
+    top: 49%;
+    left: 72%;
+    text-align: left;
+    line-height: 50px;
+    z-index: 2000}
+
+/*头像的位置*/
+.xiala2>.touxiang{
+    display:block;
+    width:150px;
+    height: 150px;
+    border-radius: 50%;
+    position: absolute;
+    left:42%; top:48%;
+    overflow: hidden;
+}
+.xiala2 .touxiang img{
+
+
+    position: absolute; top: -18px;
+}
+
+
+.hezi .ull{ width: 100%; float: right}
+.hezi ul li{text-align: center;
+    background: url("../img/wu.png") no-repeat center center;
+    background-size: 100% ;
+    width:132px; height:200px;float: left;
+  position: relative;}
+.hezi ul li>img{width: 71px; height:97px;
+    position: absolute; left:24%; top:22%; opacity: .3}
+.hezi ul li>.hei{
+    width: 71px; height:112px; position: absolute; left:24%;
+    top: 20%; background:rgba(0,0,0,.7);}
+.an{position: fixed; bottom: 10%; left: 30%;}
+
+
+
+
+/*
+
+.swiper-pagination{
+  !*  background-color: white;*!
+    height: 1000px;
+    position: fixed;
+    top: 10%; left: 10%;
+    z-index: 1000}
+*/
+
+.fenye{width: 1500px; height: 100px;
+    background: rgba(0,0,0,.7);
+    position: fixed; bottom: 0;
+    left: 0;
+    overflow: scroll;
+    padding-left: 5%;
+    padding-right: 10%;
+}
+.anniu{
+    position: relative;
+    width:100px;
+    left: 0;  top:10%;
+    text-align: center;
+}
+.anniu ul{ width: 100px;}
+.anniu ul li{
+    line-height: 72px;
+    background: url("../img/anniu.png") no-repeat center;
+    background-size: 100%;
+    width:80px;
+    height:70px;
+    transition: .5s all ease;
+    color: white;
+}
+.anniu ul li>span{color: white;
+    font-size:14px;
+
+
+}
+.fenye>.zhong{
+    width: 3300px;}
+
+.fenye .zhong ul li{
+    float:left; width: 15%;
+    height: 55px;
+    color: #616161;
+    text-align: center;
+    border-right: 1px solid #303030;
+    line-height: 45px;
+    margin-top: 20px;
+    margin-bottom:35px;
+    cursor: pointer;
+    width:250px;
+    white-space: nowrap;}
+
+.anniu ul .s-one{
+    transform:scale(1.2);}
+
+.anniu ul li:hover{
+    transform:scale(1.2);
+    cursor: pointer;}
+.fenye  .zhong .sanan{
+    position: relative;
+    left: -55px;
+    bottom:-31px;
+    opacity: 0}
+.fenye .zhong .one{
+    color: white; }
+.fenye .one>.sanan{
+    opacity: 1;}

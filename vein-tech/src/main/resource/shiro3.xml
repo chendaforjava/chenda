@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="authenticator" ref="authenticator"></property>
+	</bean>
+	
+	
+	
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="realms">
+			<list>
+				<ref bean="veinrealm"/>
+			</list>
+		</property>
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="veinrealm"
+		class="com.vein.realm.VeinRealm">
+		<!-- <property name="credentialsMatcher">
+			<bean  class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property> -->
+	</bean>
+	
+	
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+	</bean>
+
+
+
+	<!-- Used by the SecurityManager to access security data (users, roles, 
+		etc). Many other realm implementations can be used too (PropertiesRealm, 
+		LdapRealm, etc. -->
+	<!-- <bean id="jdbcRealm"
+		class="com.chenda.realms.ShiroRealm">
+		<property name="credentialsMatcher">
+			<bean  class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="secondRealm"
+		class="com.chenda.realms.SecondRealm">
+		<property name="credentialsMatcher">
+			<bean  class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="SHA1"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean> -->
+
+	<!-- ========================================================= Shiro Spring-specific 
+		integration ========================================================= -->
+	<!-- Post processor that automatically invokes init() and destroy() methods 
+		for Spring-configured Shiro objects so you don't have to 1) specify an init-method 
+		and destroy-method attributes for every bean definition and 2) even know 
+		which Shiro objects require these methods to be called. -->
+	<!-- 让spring管理shiro的生命周期 -->
+	<!-- <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" /> -->
+
+	<!-- Enable Shiro Annotations for Spring-configured beans. Only run after 
+		the lifecycleBeanProcessor has run:-->
+	<!--启用shiro的注解-->
+	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/> -->
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<!-- 登入页面 -->
+		<property name="loginUrl" value="/login.html" />
+		<property name="successUrl" value="/userManage.html" />
+		<property name="unauthorizedUrl" value="/login.html?accessType=4" />
+		<property name="filterChainDefinitions">
+			<value>
+				/login/login = anon
+				/login/corporationInfo = anon
+				/css/** = anon
+				/fonts/** = anon
+				/img/** = anon
+				/js/** = anon
+				/upload/** = anon
+				/login/logout = logout
+				/vein/login=anon
+				/feature/pickFeature = anon
+				/feature/idPickFeature = anon
+				/sign/userSign = anon
+				/feature/inquireUserID = anon
+				/device/updateDeviceOnline =anon
+				/user/blurryUsers = anon
+				/meeting/syncMeeting = anon
+				/signWall/veinLoadSchedule = anon
+				/signWall/userSign = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+	
+</beans>

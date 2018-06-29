@@ -1,0 +1,30 @@
+html, body {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color:#fff;
+    margin: 0;
+    padding: 0;
+}
+*{margin: 0; padding: 0;}
+img{margin: 0; padding: 0}
+ul,li{list-style: none; margin: 0; padding: 0}
+.hezi{width:85%;height: 100%; margin-left: 8%;padding-top: 5%;}
+.swiper-container {
+    width: 85%;
+    height: 85%;
+    z-index: 1000;
+    position: fixed;
+    top:14.5%;
+    right: 7%;
+
+}
+.swiper-slide {
+
+    font-size: 18px;
+    /* Center slide text vertically */
+}

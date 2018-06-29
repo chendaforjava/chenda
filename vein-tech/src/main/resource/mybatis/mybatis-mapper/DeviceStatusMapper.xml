@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeviceStatusMapper">
+		
+	
+	<resultMap type="device" id="device">
+		<id column="DEVICE_ID" property="deviceId" />
+		<result column="DEVICE_NAME" property="deviceName"/>
+		<result column="COR_ID" property="corId"/>
+		<result  column="DEVICE_MODEL" property="deviceModel"/>
+		<result column="BIO_TYPE" property="bioType"/>
+	</resultMap>
+	
+	<resultMap type="dept" id="dept">
+		<id column="DEP_ID" property="deptId"/>
+		<result column="DEP_NAME" property="deptName"/>
+		<result column="COR_ID" property="corId"/>
+	</resultMap>
+	
+	
+	
+	<select id="selectDeviceById" parameterType="java.lang.String" resultMap="device">
+		select 
+				DEVICE_ID,DEVICE_NAME,COR_ID,DEVICE_MODEL,BIO_TYPE
+		from
+				TB_DEVICE
+		where
+				device_id = #{deviceId}
+	</select>
+	
+	<select id="selectBusDevice" parameterType="java.lang.String" resultMap="device">
+		select 
+				DEVICE_ID,DEVICE_NAME,COR_ID,DEVICE_MODEL,BIO_TYPE
+		from
+				TB_DEVICE
+		where
+				COR_ID = #{corId}
+	</select>
+	
+	<update id="updateDeviceName" parameterType="java.util.Map">
+		update
+				tb_device
+		set
+				DEVICE_NAME = #{name}
+		where
+				DEVICE_ID = #{deviceId}
+	</update>
+	
+	<delete id="delDevice" parameterType="java.util.Map">
+		delete from tb_device where DEVICE_ID =#{deviceId}
+	</delete>
+	
+	<select id="findDeptByCorId" parameterType="java.lang.String" resultMap="dept">
+		select * from TB_DEPT where COR_ID = #{corId}
+	</select>
+	
+	
+	
+</mapper>

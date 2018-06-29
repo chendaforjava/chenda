@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSignMapper">
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+		<collection property="veinFingerList" ofType="veinfinger">
+    		<id column="VEIN_ID" property="veinId" />
+			<result column="U_ID" property="uId"/>
+			<result column="VEIN_POSITION" property="veinPosition"/>
+			<result column="VEIN_COUNT" property="veinCount"/>
+			<result column="VEIN_COLLENT" property="veinCollectTime"/>
+    	</collection>
+    	<collection property="signList" ofType="sign">
+    		<id column="SIGN_ID" property="signId"/>
+    		<result column="U_ID" property="uId"/>
+    		<result column="SIGN_TIME" property="signTime"/>
+    		<result column="SIGN_OUT" property="signOut"/>
+    	</collection>
+	</resultMap>
+	
+	
+	<resultMap type="veinfinger" id="veinfinger">
+		<id column="VEIN_ID" property="veinId"/>
+		<result column="U_ID" property="uId"/>
+		<result column="VEIN_POSITION" property="veinPosition"/>
+		<result column="VEIN_COUNT" property="veinCount"/>
+		<result column="VEIN_COLLENT" property="veinCollectTime"/>
+	</resultMap>
+	
+	<resultMap type="device" id="device">
+		<id column="DEVICE_ID" property="deviceId" />
+		<result column="DEVICE_NAME" property="deviceName"/>
+		<result column="COR_ID" property="corId"/>
+	</resultMap>
+	
+	<resultMap type="sign" id="sign">
+		<id column="SIGN_ID" property="signId"/>
+		<result column="U_ID" property="uId"/>
+		<result column="SIGN_TIME" property="signTime"/>
+		<result column="SIGN_OUT" property="signOut"/>
+	</resultMap>
+	
+	
+	<insert id="insertUserSign" parameterType="sign">
+		insert into tb_sign
+				(SIGN_ID,U_ID,SIGN_TIME)
+			values
+				(#{signId},#{uId},#{signTime})
+	</insert>
+	
+	<insert id="insertUserSignSchedule" parameterType="sign">
+		insert into tb_sign
+				(SIGN_ID,U_ID,SIGN_TIME,SCHEDULE_ID)
+			values
+				(#{signId},#{uId},#{signTime},#{scheduleId})
+	</insert>
+	
+	
+	
+	
+	<select id="findSignUser" parameterType="java.util.Map" resultMap="user">
+		select * from tb_user where JOB_NUMBER = #{jobNum} and COR_ID = #{corId}
+	</select>
+	
+	<select id="findDeviceByInfo" parameterType="java.util.Map" resultMap="device">
+		select 
+				DEVICE_ID,DEVICE_NAME,COR_ID,DEVICE_MODEL,BIO_TYPE
+		from 
+				TB_DEVICE  
+		where 
+				COR_ID = #{corId} 
+		and 
+				DEVICE_ID = #{deviceId}
+	</select>
+	
+	<select id="findDeptUser" parameterType="java.util.Map" resultMap="user">
+		select u.* from 
+
+			    (select 
+			                a.U_ID,a.U_NAME,a.U_SEX,a.U_PHONE,a.COR_ID,a.U_ADDR,a.U_PROVINCE,
+			                a.U_CITY,a.DEP_ID,a.U_VEIN_NUM,a.U_PHOTO_URL,a.JOB_NUMBER,
+			                b.VEIN_ID,b.VEIN_POSITION,b.VEIN_COUNT,b.VEIN_COLLENT
+			            from 
+			                    tb_user a  
+			            left join 
+			                    TB_VEINFINGER b
+			            on
+			                    a.U_ID = b.U_ID 
+			    )u
+			    where
+			           u.cor_id = #{corId}
+			    <if test='deptId!=null and deptId!="0"'>
+							and u.DEP_ID = #{deptId}
+			    </if>
+	</select>
+	
+	
+	<select id="getUserInfo" parameterType="java.util.Map" resultMap="user">
+		select
+			t.*
+		from
+			(
+				select 
+						a.U_ID,a.U_NAME,a.U_SEX,a.U_PHONE,a.COR_ID,a.U_ADDR,a.U_PROVINCE,
+		                a.U_CITY,a.DEP_ID,a.U_VEIN_NUM,a.U_PHOTO_URL,a.JOB_NUMBER,
+		                b.VEIN_ID,b.VEIN_POSITION,b.VEIN_COUNT,b.VEIN_COLLENT
+				from 
+						TB_USER a
+				left join
+						TB_VEINFINGER b
+				 on
+			           a.U_ID = b.U_ID
+			)t
+		where
+		  t.cor_id=#{corId}
+		  <if test='deptId!=null and deptId!="0"'>
+				and
+					t.DEP_ID = #{deptId}
+		  </if>
+	</select>
+	
+	<select id="getAllSignUSerList" parameterType="java.util.Map" resultMap="user">
+		select 
+			t.*
+		from	
+			  (
+				  select
+						a.U_ID,a.U_NAME,a.U_SEX,a.U_PHONE,a.COR_ID,a.U_ADDR,a.U_PROVINCE,
+		                a.U_CITY,a.DEP_ID,a.U_VEIN_NUM,a.U_PHOTO_URL,a.JOB_NUMBER,
+		                b.SIGN_ID,b.SIGN_TIME,b.SIGN_OUT
+					from 
+						tb_user a,tb_sign b
+					where
+						a.U_ID = b.U_ID
+					and
+						a.COR_ID = #{corId}
+					and
+						b.SIGN_TIME &gt;= #{startDate}
+					and
+						b.SIGN_TIME &lt; #{endDate}
+			)t
+		where
+			1=1
+		  <if test='deptId!=null and deptId!="0"'>
+				and
+					t.DEP_ID = #{deptId}
+		  </if>
+	</select>
+	
+	
+</mapper>

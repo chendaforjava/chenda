@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeptMapper">
+
+	<resultMap type="dept" id="dept">
+		<id column="DEP_ID" property="deptId" />
+		<result column="COR_ID" property="corId" />
+		<result column="DEP_NAME" property="deptName" />
+	</resultMap>
+
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId" />
+		<result column="COR_ID" property="corId" />
+		<result column="U_CITY" property="uCity" />
+		<result column="U_NAME" property="uName" />
+		<result column="U_ADDR" property="uAddr" />
+		<result column="U_SEX" property="uSex" />
+		<result column="U_PHONE" property="uPhone" />
+		<result column="U_PROVINCE" property="uProvince" />
+		<result column="DEP_ID" property="deptId" />
+		<result column="U_VEIN_NUM" property="uVeinNum" />
+		<result column="U_PHOTO_URL" property="uPhotoUrl" />
+		<result column="JOB_NUMBER" property="ujobNum" />
+	</resultMap>
+
+	<resultMap type="corporation" id="corporation">
+		<id column="COR_ID" property="corId" />
+		<result column="COR_NAME" property="corName" />
+		<result column="COR_ADDR" property="corAddr" />
+		<result column="COR_MAIL" property="corMail" />
+		<result column="COR_TEL" property="corTel" />
+		<collection property="managerList" ofType="manager">
+			<id column="MAGER_ID" property="magerId" />
+			<result column="COR_ID" property="corId" />
+			<result column="MID" property="mid" />
+			<result column="PASSWORD" property="password" />
+		</collection>
+	</resultMap>
+
+	<select id="findManagerInfo" parameterType="java.util.Map"
+		resultMap="corporation">
+		SELECT
+		*
+		FROM
+		TB_CORPORATION c,TB_MANAGER m
+		WHERE
+		c.COR_ID = m.COR_ID
+		AND
+		c.COR_ID = #{corporationId}
+		AND
+		m.MID = #{userName}
+	</select>
+	
+	<select id="getAllDept" parameterType="java.lang.String" resultMap="dept" useCache="true">
+		SELECT
+				DEP_ID,COR_ID,DEP_NAME
+		FROM	
+				TB_DEPT
+		WHERE
+				COR_ID=#{corId}
+	</select>
+	
+	<select id="getAllDeptNum" parameterType="java.util.Map" useCache="true" resultType="java.lang.Integer">
+		SELECT
+				count(*)
+		FROM
+				TB_DEPT
+		WHERE
+				COR_ID=#{corId}
+		<if test="deptName != null and deptName != ''">
+			and DEP_NAME like CONCAT('%',CONCAT(#{deptName},'%')) escape '\'
+		</if>
+	</select>
+	
+	
+	<select id="getDeptByPage" parameterType="java.util.Map" resultMap="dept">
+		select 
+				*
+		from
+				(
+					select 
+							a.*,ROWNUM rn 
+					from 
+						(
+							select 
+								DEP_ID,COR_ID,DEP_NAME
+							FROM
+								TB_DEPT
+							WHERE
+								COR_ID=#{corId}
+							<if test="deptName != null and deptName != ''">
+								and DEP_NAME like CONCAT('%',CONCAT(#{deptName},'%')) escape '\'
+							</if>
+						)a
+					WHERE
+						ROWNUM &lt;=#{end}
+				)t
+		where 
+    			t.rn &gt;= #{start}
+	</select>
+	
+	
+	
+	
+	
+
+	<select id="findDeptByName" parameterType="java.util.Map"
+		resultMap="dept">
+		SELECT
+		DEP_ID,COR_ID,DEP_NAME
+		FROM
+		TB_DEPT
+		WHERE
+		DEP_NAME=#{deptName}
+		AND
+		COR_ID=#{corId}
+	</select>
+
+	<insert id="saveDept" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		TB_DEPT (DEP_ID,COR_ID,DEP_NAME)
+		VALUES
+		(#{deptId},#{corId},#{deptName})
+	</insert>
+
+	<delete id="delDept" parameterType="java.util.Map">
+		DELETE FROM
+		TB_DEPT
+		WHERE
+		COR_ID =#{corId}
+		AND
+		DEP_NAME = #{deptName}
+	</delete>
+
+
+	<select id="inquireDept" parameterType="java.util.Map"
+		resultMap="dept">
+		SELECT
+		DEP_ID,COR_ID,DEP_NAME
+		FROM
+		TB_DEPT
+		WHERE
+		COR_ID = #{corId}
+		<if test="deptName != null and deptName != ''">
+			AND DEP_NAME LIKE CONCAT('%',CONCAT(#{deptName},'%')) escape '\'
+		</if>
+	</select>
+	
+	
+	<select id="inquireDeptByName" parameterType="java.util.Map"
+		resultMap="dept">
+		SELECT
+			DEP_ID,COR_ID,DEP_NAME
+		FROM
+			TB_DEPT
+		WHERE
+			COR_ID = #{corId}
+		AND
+			DEP_NAME = #{deptName}
+	</select>
+
+
+	<delete id="delDeptUsers" parameterType="java.util.Map">
+		DELETE
+		FROM TB_USER WHERE COR_ID = #{corId} AND DEP_ID= #{deptId}
+	</delete>
+
+	<select id="inquireDeptUser" parameterType="java.util.Map"
+		resultMap="user">
+		SELECT * FROM TB_USER WHERE COR_ID=#{corId} AND DEP_ID= #{deptId}	
+	</select>
+	
+	
+	<update id="modifyDeptName" parameterType="java.util.Map">
+		update TB_DEPT set DEP_NAME = #{deptName} where COR_ID=#{corId} and DEP_ID=#{deptId}
+	</update>
+	
+	
+	
+</mapper>

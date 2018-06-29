@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微盾点名系统</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="css/loginDialog.css">
+
+</head>
+<body  ng-app="myApp">
+<!------------------------------全部---------------------------->
+
+<div  ng-controller="myCtrl">
+    <div class="left pull-left">
+        <h2 style="color: #fff; padding-left:45px; font-family:'汉仪菱心体简'; margin-top: 105px;" id="corporationName"></h2>
+        <!--导航兰-->
+        <div class="navs">
+            <ul class="nacs">
+                <a href="departmentManage.html"> <li><span class="iconfont icon-renyuan"></span>部门管理</li></a>
+                <a href="userManage.html"> <li><span class="iconfont icon-yonghu"></span>用户管理</li></a>
+                <a href="deviceStatus.html"><li   class="one"><span class="iconfont icon-shebei"></span>设备管理</li></a>
+                <a href="veinCollent.html"><li><span class="iconfont icon-caijirenwu"></span>指静脉采集</li></a>
+                <a href="userList.html"><li><span class="iconfont icon-xiangqing"></span>点名</li></a>
+                <a href="meetingManage.html"><li><span class="iconfont icon-xiangqing"></span>会议管理</li></a>
+                <a href="signWall.html"><li><span class="iconfont icon-xiangqing"></span>照片墙</li></a>
+            </ul>
+        </div>
+    </div>
+    <!-----------------------左边部分结束----------------------------->
+
+    <!--------------------页面的右边部分开始--------------->
+    <div class="right pull-right contt">
+        <!-------右边的头部-------->
+        <div class="right-hande">
+            <!--------------头部的应用-------------->
+            <div class="handeRight pull-right">
+                <ul>
+                    <li class="ones"><span class="iconfont icon-rizhi" style="color: #f1f1f1"></span></li>
+                    <li  class="tou"><img src="img/touxiang.png">
+                        <p class="zi"><span id="managereName">张三</span><br><span>管理员</span></p>
+                        <span ng-click="toggle()" class="iconfont dianwo icon-fa-angle-down" style="color: #000"></span>
+                        <!---------------管理员下拉------------------->
+                        <p class="xiala" ng-hide="myVar"><span href="#" id="example">修改密码</span><a href="log/logout"><span>退出登录</span></a></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+<!--设备状态-->
+        <div  style="margin-top: 5%">
+            <h3 style="text-align: center">设备状态</h3>
+            <table class="table table-striped table-hover"  id="deviceStatusTable" style="text-align: center">
+                <tr>
+                    <th style="text-align: center">设备</th>
+                    <th style="text-align: center">名称</th>
+                    <th style="text-align: center">ID</th>
+                    <th style="text-align: center">状态</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </table>
+        </div>
+
+
+        <!-----------------修改设备弹出层---------------------->
+        <div id="modifyDeviceDiv" style=" z-index:1000; display:none; height:900px; position: fixed; width:100%; top:0; left:0"   >
+            <div class="modal-dialog modal-sm" role="document" style="width:450px; margin:300px auto 0 auto;  text-align: center">
+                <div class="modal-content">
+                    <div class="form-inline" style="height:150px; line-height:150px;">
+                        <div class="form-group">
+                            <label class="sr-only" for="exampleInputAmount">设备名称</label>
+                            <div class="input-group">
+
+                                <input type="text" class="form-control" id="exampleInputAmount" placeholder="修改设备名称">
+
+                            </div>
+                        </div>
+                        <button class="btn-xiu" style = "width:80px; height:40px;  line-height:40px;  background-color: #337AB7;border:none;color:#fff" onclick="modifydeviceName();">修改</button>
+                         <button class="btn-close" onclick="colse()" id="displaynone" style = "width:80px; height:40px;  line-height:40px;  background-color: #fff;border:1px solid #ccc;color:#000">关闭</button>
+                   		 
+                    </div>
+                    <span id="prompt" style="color: red;position: relative; top: -20px;" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+        <!--修改密码的弹出层-->
+        <div id="LoginBox">
+            <div  onsubmit="return ckoe()" id="form">
+                <div class="row1">
+                    修改密码<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn">×</a>
+                </div>
+                <div class="row">
+                    原&nbsp;密&nbsp;码: <span class="inputBox">
+                <input type="password" id="txtName" placeholder="原始密码"style="height: 30px; border:1px solid #c3c3c3;" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn">*</a>
+                </div>
+                <div class="row">
+                    密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码: <span class="inputBox">
+                <input type="password" id="txtPwd" placeholder="密码" style="height: 30px; border:1px solid #c3c3c3;"/>
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn2">*</a>
+                </div>
+                <div class="row">
+                    确认密码: <span class="inputBox2">
+                <input type="password" id="txtPwd2" placeholder="确认密码" style="height: 30px; width:220px; border:1px solid #c3c3c3;" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn3">*</a>
+                </div>
+                <div class="row">
+                    <p style="cursor: pointer; width: 122px; height: 45px; text-align: center; line-height: 45px; border: 1px #ccc solid;margin-left: 32%" onclick="modifypsw();">确认修改</p>
+                </div>
+            </div>
+        </div>
+        <!------------------------右边部分结束------------------------------->
+    </div>
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+
+<script src="js/bacck.js"></script>
+<script src="js/input.js"></script>
+<script>
+    //图片上传预览    IE是用了滤镜。
+    function previewImage(file)
+    {
+        var MAXWIDTH  = 90;
+        var MAXHEIGHT = 90;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0])
+        {
+            div.innerHTML ='<img id=imghead onclick=$("#previewImg").click()>';
+            var img = document.getElementById('imghead');
+            img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function(evt){img.src = evt.target.result;}
+            reader.readAsDataURL(file.files[0]);
+        }
+        else //兼容IE
+        {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+        }
+    }
+    function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+        var param = {top:0, left:0, width:width, height:height};
+        if( width>maxWidth || height>maxHeight ){
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if( rateWidth > rateHeight ){
+                param.width =  maxWidth;
+                param.height = Math.round(height / rateWidth);
+            }else{
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+    
+    
+    function modifypsw(){
+    	var origPassword = $('#txtName').val();
+    	var newPassword1 = $('#txtPwd').val();
+    	var newPassword2 = $('#txtPwd2').val();
+    	var flag = checkParameter(origPassword,newPassword1,newPassword2);
+    	if(flag==true){
+    		//修改密码
+        	params = {"password":origPassword,"newpassword":newPassword1};
+        	$.ajax({
+        		type : 'POST',
+        		url : 'vein/changepwd',
+        		async:true,
+        		contentType: "application/json; charset=utf-8",
+                timeout : 500,
+                dataType : "json",
+                data:JSON.stringify(params),
+                success : function(data) {
+                    if(data!=null && data!=undefined){
+                    	if(data.accessType=='1'){
+                    		$('#LoginBox').hide();
+                    		$('#mask').hide();
+                    		window.location.href="login.html";
+                    	}else if(data.accessType=='4'){
+                    		$('#warn').show();
+                    	}
+                    }
+                },
+                error : function(data) {
+                	window.location.href="login.html";
+                }
+            });
+    	}
+    }
+    
+    function checkParameter(parm1,param2,param3){
+    	if(parm1.trim().length==0){
+    		$('#warn').show();
+    		return false;
+    	}else{
+    		$('#warn').hide();
+    	}
+    	if(param2===param3 && param2.length>0 && param3.length>0){
+    		$('#warn').hide();
+    		$('#warn2').hide();
+    		$('#warn3').hide();
+    		return true;
+    	}else{
+    		$('#warn2').show();
+    		$('#warn3').show();
+    		return false;
+    	}
+    	return true;
+    }
+</script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/iconfont.js"></script>
+<script src="js/device.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+		
+	<settings>
+		<setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.vein.bean.Corporation" alias="corporation"/>
+		<typeAlias type="com.vein.bean.Manager" alias="manager"/>
+		<typeAlias type="com.vein.bean.Dept" alias="dept"/>
+		<typeAlias type="com.vein.bean.Sign" alias="sign"/>
+		<typeAlias type="com.vein.bean.User" alias="user"/>
+		<typeAlias type="com.vein.bean.VeinFinger" alias="veinfinger"/>
+		<typeAlias type="com.vein.bean.Device" alias="device"/>
+		<typeAlias type="com.vein.bean.Schedule" alias="schedule"/>
+		<typeAlias type="com.vein.bean.ScheduleUser" alias="scheduleUser"/>
+		<typeAlias type="com.vein.bean.UserTemp" alias="userTemp"/>
+	</typeAliases>
+
+
+</configuration>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+<title>商家</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/iconfont.css">
+<link rel="stylesheet" href="css/back.css">
+<link rel="stylesheet" href="css/loginDialog.css">
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/usersAngular.js"></script>
+<script src="js/veinCollent.js"></script>
+<script src="js/bacck.js"></script>
+<script src="js/input.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/iconfont.js"></script>
+<script type="text/javascript">
+	 	var timeout = -1;
+	    var FingerDetectCnt = 0;
+	    var RegisterCounter = 0;
+	    function CheckWedoneOcx() {
+		    try{   
+			    var   obj = new ActiveXObject("WEDONEOCX.WedoneOcxCtrl.1"); 
+			    //alert("已经注册");
+		    }
+		    catch(e)   
+		    {
+			    alert("尚未安装控件，请下载安装后重试");//可以在这边弹出下载提示框
+		    }   
+	    }
+	    function FetchTemplate1(object)// 添加注册模板
+	    {
+	        var ret = WedoneOcx.WDOCX_FetchVeinTemplateEx(3);
+	        var obj = document.getElementById("VeinData1");
+	        obj.value = ret;
+	        var buttonId = $(object).attr('id');
+	        if(buttonId=="mainTemp"){
+	        	$('#hideInput').val('0');
+	        }else{
+	        	$('#hideInput').val('1');
+	        }
+	    }
+	    function FetchTemplateFor2Times() {
+	        RegisterCounter = 0;
+	        FetchTemplate2();        
+	    }
+	</script>
+</head>
+<body onload="CheckWedoneOcx()">
+	<!------------------------------全部---------------------------->
+	<OBJECT ID="WedoneOcx"
+		CLASSID="clsid:25BF8A59-6AD2-4BEC-92AF-0CC480814272" HEIGHT=0 WIDTH=0
+		cadebase="WedoneOcx.ocx">
+		<PARAM NAME="_Version" VALUE="65536">
+		<PARAM NAME="_ExtentX" VALUE="3329">
+		<PARAM NAME="_ExtentY" VALUE="2164">
+		<PARAM NAME="_StockProps" VALUE="64">
+	</OBJECT>
+	<div ng-controller="myCtrl">
+		<div class="left pull-left">
+			<h2 style="color: #fff; padding-left:45px; font-family:'汉仪菱心体简'; margin-top: 105px;" id="coporationName"></h2>
+			<!--导航兰-->
+			<div class="navs">
+				<ul class="nacs">
+					<a href="departmentManage.html"> <li ><span class="iconfont icon-renyuan"></span>部门管理</li></a>
+					<a href="userManage.html"> <li><span class="iconfont icon-yonghu"></span>用户管理</li></a>
+					<a href="deviceStatus.html"><li><span class="iconfont icon-shebei"></span>设备管理</li></a>
+					<a href="veinCollent.html"><li  class="one"><span class="iconfont icon-caijirenwu"></span>指静脉采集</li></a>
+					<a href="userList.html"><li><span class="iconfont icon-xiangqing"></span>点名</li></a>
+					<a href="meetingManage.html"><li><span class="iconfont icon-xiangqing"></span>会议管理</li></a>
+					<a href="signWall.html"><li><span class="iconfont icon-xiangqing"></span>照片墙</li></a>
+				</ul>
+			</div>
+		</div>
+		<!-----------------------左边部分结束----------------------------->
+
+		<!--------------------页面的右边部分开始--------------->
+		<div class="right pull-right contt">
+			<!-------右边的头部-------->
+			<div class="right-hande">
+				<!--------------头部的应用-------------->
+
+				<div class="handeRight pull-right">
+					<ul>
+						<li class="ones"><span class="iconfont icon-rizhi"
+							style="color: #f1f1f1"></span></li>
+						<li class="tou"><img src="img/touxiang.png">
+							<p class="zi">
+								<span id="adminstratroId">张三</span><br>
+								<span>管理员</span>
+							</p> <span ng-click="toggle()"
+							class="iconfont dianwo icon-fa-angle-down" style="color: #f1f1f1"></span>
+							<!---------------管理员下拉-------------------></li>
+					</ul>
+				</div>
+			</div>
+			<!---------------下边部分-------------------->
+			<div class="right-sou">
+				<div class="nei">
+					<input type="text" placeholder="请输入查找的姓名" id="InquireNameId">
+					<button type="button" class="btn btn-primary"
+						onclick="InquireUser();">查询</button>
+				</div>
+			</div>
+			<!-----------------------表单部分----------------------------->
+			<p class="renyuan">人员信息</p>
+			<div id="biaodan">
+				<table id="collentTable"
+					class="table table-striped table-hover .table-condensed">
+					<tr>
+						<th>部门</th>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>编号</th>
+						<th>手机号</th>
+						<th>照片</th>
+						<th>操作</th>
+					</tr>
+					<!-- <tr>
+                    <td>产品中心</td>
+                    <td>余明来</td>
+                    <td>男</td>
+                    <td>001</td>
+                    <td>132546545985</td>
+                    <td class="zhao">
+                    </td>
+                    查看
+                    <td>
+                        <button type="button" class="btn btn-primary chakan2">
+                           		 查看
+                        </button>
+                        弹出个人信息框
+                    </td>
+                </tr> -->
+				</table>
+				<!-------------------弹出层---------------------->
+				<div class="tan2" id="veinCollentPage">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content motai" style="padding-bottom: 15px">
+							<!--头像的位置-->
+							<div class="touxiang">
+								<img class="img-thumbnail" src="img/temp.jpg" width="100">
+							</div>
+							<!--个人信息-->
+							<div name="voterfom">
+									<label for="depar1" style="margin-left:5%" >部门:</label>
+									<input type="text" class="form-control" id="depar1" name="dep"
+									style="width:28%;    display: inline-block;" value="" disabled="disabled">
+									<label for="name1" style="margin-left: 15px">姓名:</label>
+									<input type="text" id="name1" name="name" ng-model="sadk" style="width:28%;    display: inline-block;" class="form-control" disabled="disabled">
+							<div>
+									<label for="number1" style="margin-left:5%">编号:</label>
+									<input type="text" id="number1" name="number" style="width:28%;    display: inline-block;" class="form-control" disabled="disabled">
+									<label for="phone1" style="margin-left: 15px">手机:</label>
+									<input type="tel" id="phone1"  class="form-control" style="width:28%;    display: inline-block;" name="phone" disabled="disabled">
+						</div>
+								<div class="xiu" style="height: 60px; text-align: left">
+									<span
+										style="margin-left: 70px; font-size: 16px; font-weight: bold;">模板：</span>
+									<button type="button" class="btn btn-primary xiugai" onclick="FetchTemplate1(this)" id="mainTemp">主模板</button>
+									<button type="button" class="btn btn-success xiugai" id="duptTemp" onclick="FetchTemplate1(this)">副模板</button>
+									<button type="button" class="btn btn-info xiugai" onclick="submitVeinData();">提交</button>
+									<button type="button" class="btn btn-default tanguan2"
+										onclick="clockVeinPage();">关闭</button><span style="padding-left:6px; color:red" id="alertMessage"></span>	
+									<input id="hideInput" style="display:none"/>
+								</div>
+								<textarea ID="VeinData1"
+									style="overflow-x: hidden; width: 80%; height: 200px;"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!------------------------右边部分结束------------------------------->
+		<!-----------------------录入信息框-------------------------------->
+		<!-- <div class="luru">
+        录入信息
+        <form  action="https://www.baidu.com" method="post" onsubmit="return req();" id="forms" novalidate enctype="multipart/form-data">
+            <label for="bumen">部门</label>
+            <select id="bumen" name=""  style="width:8%">
+                <option value="chan">产品</option>
+                <option value="xiao">销售</option>
+            </select>
+            <input type="text" id="depar" name="dep" style="border: 1px #c0c0c0 solid; border-radius:5px; margin-left: 6px; width: 9% ">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name"style="border: 1px #c0c0c0 solid; border-radius:5px; margin-left: 6px;width: 9%">
+            <label for="six">性别:</label>
+
+            <select id="six" name="">
+                <option value="man">男</option>
+                <option value="woman">女</option>
+            </select>
+            <label for="number">编号:</label><input type="text" id="number" name="number"style="border: 1px #c0c0c0 solid; border-radius: 5px;margin-left: 6px;width: 9% ">
+            <label for="phone">手机:</label><input type="tel" id="phone" name="phone"style="border: 1px #c0c0c0 solid; border-radius: 5px;margin-left: 6px;width: 9% ">
+            <input type="file" style="width: 170px; margin-right: 0" class="file">
+            <input type="submit" class="btn btn-primary btn-lg" value="提交" class="button" style="margin-right: 0">
+        </form>
+    </div> -->
+	</div>
+	<script>
+    //图片上传预览    IE是用了滤镜。
+    function previewImage(file)
+    {
+        var MAXWIDTH  = 90;
+        var MAXHEIGHT = 90;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0])
+        {
+            div.innerHTML ='<img id=imghead onclick=$("#previewImg").click()>';
+            var img = document.getElementById('imghead');
+            img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function(evt){img.src = evt.target.result;}
+            reader.readAsDataURL(file.files[0]);
+        }
+        else //兼容IE
+        {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+        }
+    }
+    function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+        var param = {top:0, left:0, width:width, height:height};
+        if( width>maxWidth || height>maxHeight ){
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if( rateWidth > rateHeight ){
+                param.width =  maxWidth;
+                param.height = Math.round(height / rateWidth);
+            }else{
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+</script>
+</body>
+</html>

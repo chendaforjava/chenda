@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微盾点名系统</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+  	<link rel="stylesheet" href="css/dcalendar.picker.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="css/loginDialog.css">
+<!--     <link rel="stylesheet" href="css/pagination.css"> -->
+</head>
+<body  ng-app="myApp">
+<!------------------------------全部---------------------------->
+
+<div  ng-controller="myCtrl">
+    <div class="left pull-left">
+
+        <h2 id="coporationicon" style="color: #fff; padding-left:45px; font-family:'汉仪菱心体简'; margin-top: 105px;"></h2>
+
+        <!--导航兰-->
+        <div class="navs">
+            <ul class="nacs">
+                <a href="departmentManage.html"> <li ><span class="iconfont icon-renyuan"></span>部门管理</li></a>
+                <a href="userManage.html"> <li class="one"><span class="iconfont icon-yonghu"></span>用户管理</li></a>
+                <a href="deviceStatus.html"><li><span class="iconfont icon-shebei"></span>设备管理</li></a>
+                <a href="veinCollent.html"><li><span class="iconfont icon-caijirenwu"></span>指静脉采集</li></a>
+                <a href="userList.html"><li><span class="iconfont icon-xiangqing"></span>点名</li></a>
+                <a href="meetingManage.html"><li><span class="iconfont icon-xiangqing"></span>会议管理</li></a>
+                <a href="signWall.html"><li><span class="iconfont icon-xiangqing"></span>照片墙</li></a>
+            </ul>
+        </div>
+    </div>
+    <!-----------------------左边部分结束----------------------------->
+
+    <!--------------------页面的右边部分开始--------------->
+    <div class="right pull-right contt">
+        <!-------右边的头部-------->
+        <div class="right-hande">
+            <!--------------头部的应用-------------->
+            
+            <div class="handeRight pull-right">
+                <ul>
+                    <li class="ones" style="text-align: center; line-height: 10px; font-size: 12px;">
+
+                    <li  class="tou"><img src="img/touxiang.png">
+                        <p class="zi"><span id="administraterName"></span><br><span>管理员</span></p>
+                        <span ng-click="toggle()" class="iconfont dianwo icon-fa-angle-down" style="color: #000"></span>
+                        <!---------------管理员下拉------------------->
+                        <p class="xiala paws" ng-hide="myVar"><span href="#" id="example">修改密码</span><a href="login/logout"><span>退出登录</span></a></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--------------------------添加部门弹出框------------------------->
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div  role="document" style=" margin-top:5%" >
+                <div class="modal-content"style="width: 500px; height: 600px; position: relative; left: 35%;
+             background-color: #f1f1f1" class="modal-dialog modal-sm">
+ 
+                    <div class="row pre-scrollable" style="height: 500px; width: 80%;border:1px solid #ccc ; margin-left: 10%; margin-top:5%">
+
+	                    <table class="table tabless" style="text-align: center; line-height:32px">
+								
+	
+	                    </table>
+                    </div>
+
+                    <div style="position: absolute; bottom: 20%; width: 100%">
+
+                            <input type="text" style="width: 70%;  margin-left: 10%" class="form-control pull-left " id="inputPassword2" placeholder="输入部门">
+
+                        <button onclick="bumen()"  type="submit" class="btn btn-primary pull-right" style="margin-right: 6%">添加</button>
+                    </div>
+
+                    <div class="modal-footer" style="position: absolute; bottom: 0; right: 0">
+                    	<span style="margin-right: 60px;color: red" id="deptAddId"></span>
+                        <button type="button" class="btn btn-default" style="" data-dismiss="modal">关闭</button>               
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--修改密码的弹出层-->
+        <div id="LoginBox">
+            <div  onsubmit="return ckoe()" id="form">
+                <div class="row1">
+                    修改密码<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn">×</a>
+                </div>
+                <div class="row">
+                    原&nbsp;密&nbsp;码: <span class="inputBox">
+                <input type="password" id="txtName" placeholder="原始密码"style="height: 30px; border:1px solid #c3c3c3;" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn">*</a>
+                </div>
+                <div class="row">
+                    密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码: <span class="inputBox">
+                <input type="password" id="txtPwd" placeholder="密码" style="height: 30px; border:1px solid #c3c3c3;"/>
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn2">*</a>
+                </div>
+                <div class="row">
+                    确认密码: <span class="inputBox2">
+                <input type="password" id="txtPwd2" placeholder="确认密码" style="height: 30px; width:220px; border:1px solid #c3c3c3;" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn3">*</a>
+                </div>
+                <div class="row">
+                    <p style="cursor: pointer; width: 122px; height: 45px; text-align: center; line-height: 45px; border: 1px #ccc solid;margin-left: 32%" onclick="modifypsw();">确认修改</p>
+                </div>
+            </div>
+        </div>
+        <!---------------下边部分-------------------->
+        <div class="right-sou">
+            <div class="nei"> 
+            	<input type="text" placeholder="请输入查找的姓名" id="InquireNameId">
+                <button type="button" class="btn btn-primary" onclick="InquireUser();">查询</button>
+           </div>
+        </div>
+
+
+        <!-----------------------表单部分----------------------------->
+        <p class="renyuan" style="position: relative">
+      人员信息
+      	<select id="bumenselect" class="form-control" style="width:12%; position: absolute; left:123px; top:2px; " >
+				            <option value="0">部门</option>
+          				</select>
+
+
+            <button type="button" class="ones"   style="margin-right:10%; background: rgba(0,0,0,0); border: none; position: absolute;right: 20px;" >
+                <a class="glyphicon glyphicon-plus" style="margin-right: 5px; color: #3b3b43"></a>添加</button>
+          </p>
+        <div id="biaodan">
+            <table class="table table-striped table-hover table-condensed" id="userstable">
+               <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>编号</th>
+                    <th>手机号</th>
+                    <th>指静脉数</th>
+                    <th>照片</th>
+                    <th>操作</th>
+                </tr>
+            </table>
+            
+        </div>
+
+ 
+
+    </div>
+	  <!--  <div  class="tan">
+                <div class="modal-dialog" role="document" >
+                    <form  action="vein/modifyuser" method="post" onsubmit="return xiugai2();" novalidate enctype="multipart/form-data"   class="modal-content motai" style=" padding-bottom: 15px">
+                        <input type="text" id="userIddd" name="userId"  style="position: relative;opacity: 0;">
+                        头像的位置
+                        <div class="touxiang">
+                            <img id="detilImage" src="img/shuaige.jpg"  width="120"/>
+                        </div>
+                        <input type="file" name="file2" style="width: 170px; margin-left: 40%" class="file" accept ="image/*" id="file2">
+                        个人信息
+                        <div name="voterfom">
+                            <div class="xiu">
+                                <label for="depar1">部门:</label>  <select id="departmentId" name="depart" style="width:30%"><option value="1">男</option><option value="2">女</option> </select>
+                            </div>
+                            <div class="xiu">
+                                <label for="name1">姓名:</label><input type="text" id="name1" name="name" ng-model="sadk" style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; "><span id="namespan" style="color:red;display:none;padding-left:5px;">*</span>
+                            </div>
+
+                            <div class="xiu">
+                                <label for="number1">编号:</label><input type="text" id="number1" name="number"style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; ">
+                            </div>
+                            <div class="xiu">
+                                <label for="phone1">手机:</label><input type="tel" id="phone1" name="phone"style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; "><span id="phonespan" style="color:red;display:none;padding-left:5px;">*</span>
+                            </div>
+                            <div class="xiu" style="height: 60px;">
+                                <button type="button" class="btn btn-primary xiugai" onclick="modifyInfo();">修改</button>
+                                <input type="submit" class="btn btn-primary xiugai" value="修改" class="button" style="margin-right: 0">
+                                <button type="button" class="btn btn-default tanguan">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+             <div  class="tan">
+                <div class="modal-dialog" role="document" >
+                    <form  action="user/modifyuser" method="post" onsubmit="return xiugai2();" novalidate enctype="multipart/form-data"   class="modal-content motai" style=" padding-bottom: 15px">
+                        <input type="text" id="userIddd" name="userId"  style="position: relative;opacity: 0;">
+                        <!--头像的位置-->
+                        <div class="touxiang">
+                            <img id="detilImage" src="img/shuaige.jpg"  width="120"/>
+                        </div>
+                        <input type="file" name="file2" style="width: 170px; margin-left: 40%" class="file" accept ="image/*" id="file2">
+                        <!--个人信息-->
+                        <div name="voterfom">
+                            <div class="xiu">
+                                <label for="depar1">部门:</label>  <select id="departmentId" name="depart" style="width:30%"><!-- <option value="1">男</option><option value="2">女</option> --> </select>
+                            </div>
+                            <div class="xiu">
+                                <label for="name1">姓名:</label><input type="text" id="name1" name="name" ng-model="sadk" style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; "><span id="namespan" style="color:red;display:none;padding-left:5px;">*</span>
+                            </div>
+
+                          <!--   <div class="xiu">
+                                <label for="number1">编号:</label><input type="text" id="number1" name="number"style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; ">
+                            </div> -->
+                            <div class="xiu">
+                                <label for="phone1">手机:</label><input type="tel" id="phone1" name="phone"style="border: 1px #c0c0c0 solid; border-radius: 5px; margin-left: 6px; "><span id="phonespan" style="color:red;display:none;padding-left:5px;">*</span>
+                            </div>
+                            <div class="xiu" style="height: 60px;">
+                              <!--   <button type="button" class="btn btn-primary xiugai" onclick="modifyInfo();">修改</button> -->
+                                <input type="submit" class="btn btn-primary xiugai" value="修改" class="button" style="margin-right: 0">
+                                <button type="button" class="btn btn-default tanguan">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    <!------------------------右边部分结束------------------------------->
+
+    <!-----------------------录入信息框-------------------------------->
+    <div class="luru">
+        <!--录入信息-->
+        <form  action="user/adduser" method="post" onsubmit="return req();" id="forms" novalidate enctype="multipart/form-data" style="margin-left: 100px;">
+            <label for="bumen">部门</label>
+            <select id="bumen" name="dptno"  style="width:8%">
+            </select>
+            <!-- <input type="text" id="depar" name="dep" style="border: 1px #c0c0c0 solid; border-radius:5px; margin-left: 6px; width: 9% "> -->
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name" style="border: 1px #c0c0c0 solid; border-radius:5px; margin-left: 6px;width: 9%">
+           
+            <label for="six">性别:</label>
+            <select id="sex" name="sex">
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
+            
+            <label for="number">编号:</label><input type="text" id="number" name="ujobNum" style="border: 1px #c0c0c0 solid; border-radius: 5px;margin-left: 6px;width: 9% ">
+            <label for="phone">手机:</label><input type="tel" id="phone" name="phone" style="border: 1px #c0c0c0 solid; border-radius: 5px;margin-left: 6px;width: 9% ">
+
+            <input type="file" name="file1" style="width: 170px; margin-right: 0" class="file" accept ="image/*" id="file1">
+            <input type="submit" class="btn btn-primary btn-lg" value="提交" class="button" style="margin-right: 0">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeuseradd();">关闭</button>
+            <span id="prompt" style="color: red" ></span>
+        </form>
+    </div>
+    
+    <div class="fenye" style="margin-left: 50%" id="paginationId">
+	</div>
+	<div class="fenye" style="margin-left: 50%;display:none" id="paginationDeptId">
+	</div>
+	<div class="fenye" style="margin-left: 50%;display:none" id="paginationNameId">
+	</div>
+</div>
+
+
+<div id="imageblock" style="width: 100%; height: 1000px; position: fixed; left: 0; top: 0; z-index: 1000; background:rgba(0,0,0,.6);display:none;"  onclick="imageListener();">
+	<div style="margin:100px auto; width: 400px; height: 500px;" >
+	   <img src="" alt="" width="100%" id="showBigImage" />
+	</div>
+</div>
+
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bacck.js"></script>
+<script src="js/input.js"></script>
+<script src="js/userManage.js"></script>
+<script src="js/selectUi.js"></script>
+<script src="js/jquery.json-2.4.js"></script>
+<script type="text/javascript" src="js/jquery.pagination.js"></script>
+<script>
+    //图片上传预览    IE是用了滤镜。
+    function previewImage(file)
+    {
+        var MAXWIDTH  = 90;
+        var MAXHEIGHT = 90;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0])
+        {
+            div.innerHTML ='<img id=imghead onclick=$("#previewImg").click()>';
+            var img = document.getElementById('imghead');
+            img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function(evt){img.src = evt.target.result;}
+            reader.readAsDataURL(file.files[0]);
+        }
+        else //兼容IE
+        {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+        }
+    }
+    function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+        var param = {top:0, left:0, width:width, height:height};
+        if( width>maxWidth || height>maxHeight ){
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if( rateWidth > rateHeight ){
+                param.width =  maxWidth;
+                param.height = Math.round(height / rateWidth);
+            }else{
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+    //修改密码
+    function modifypsw(){
+    	var origPassword = $('#txtName').val();
+    	var newPassword1 = $('#txtPwd').val();
+    	var newPassword2 = $('#txtPwd2').val();
+    	var flag = checkParameter(origPassword,newPassword1,newPassword2);
+    	if(flag==true){
+    		//修改密码
+        	params = {"password":origPassword,"newpassword":newPassword1};
+        	$.ajax({
+        		type : 'POST',
+        		url : 'user/changePwd',
+        		async:true,
+        		contentType: "application/json; charset=utf-8",
+                timeout : 500,
+                dataType : "json",
+                data:JSON.stringify(params),
+                success : function(data) {
+                    if(data!=null && data!=undefined){
+                    	if(data.accessType=='1'){
+                    		window.location.href="login.html";
+                    	}else {
+                    		$('#warn').show();
+                    	}
+                    }
+                },
+                error : function(data) {
+                	window.location.href="login.html";
+                }
+            });
+    	}
+    }
+   function checkParameter(parm1,param2,param3){
+    	if(parm1.trim().length==0){
+    		$('#warn').show();
+    		return false;
+    	}else{
+    		$('#warn').hide();
+    	}
+    	if(param2===param3 && param2.trim().length>0 && param3.trim().length>0){
+    		$('#warn').hide();
+    		$('#warn2').hide();
+    		$('#warn3').hide();
+    		return true;
+    	}else{
+    		$('#warn2').show();
+    		$('#warn3').show();
+    		return false;
+    	}
+    	return true;
+    }
+   
+   function checkImg(obj){
+	   var file = $(obj).files[0];
+	   if(!/image\/\w+/.test(file.type)){
+	         alert('上传的不是图片');
+	         return false;
+	   }
+   }
+	
+   function closeuseradd(){
+	   $('.luru').hide();
+   }
+   
+</script>
+
+<script src="js/iconfont.js"></script>
+
+</body>
+</html>

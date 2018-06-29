@@ -1,0 +1,246 @@
+/*
+公共样式部分
+*/
+*{margin: 0; padding: 0; font-size: 16px; font-family: "微软雅黑";}
+ul,li,ol,img{margin: 0; padding: 0; list-style: none;}
+p,span{margin: 0; padding: 0; font-size: 14px; font-weight: normal;}
+a{color:#3c6873; text-decoration: none;}
+a:hover{ cursor: pointer;}
+.clearfloat{ clear: both;}
+/*
+公共样式
+*/
+
+
+/*---------------左边部分导航样式----------------------*/
+body{width:100%;}
+.left{width: 15%; height: 1000px; background-color: #32323a; position: fixed; left: 0; top: 0;}
+.right{width:85%;  position: relative}
+/*logo*/
+.logo{margin:30px 0 0 55px; }
+
+
+ .form-group .btn-xiu:hover{ background-color:#286090}
+ #btn-close:hover{ background-color:#e6e6e6}
+
+
+
+/*--------------左边的导航-------------*/
+.left .navs{ margin-top: 35%}
+.left .navs li{width: 100%; height: 70px; line-height: 70px; font-size: 18px; color: #c4bfbf}
+.left .navs li:hover{background-color: #3b3b43; color: white}
+.left .navs li>span{ margin:0 15% 0 5%}
+.left .navs .one{background-color: #3b3b43; color: white}
+
+
+
+/*----------------------右半部分头部-----------------------------------*/
+.right .right-hande{height: 60px; width: 85%; background-color: #f1f1f1;
+    border-bottom: solid #ccc 1px; position: fixed; top: 0; z-index: 1000}
+
+
+
+/*------------------------搜索区域---------------------------------*/
+.right .right-sou{height: 45px; width: 85%;
+    position: fixed;
+    right:0; top:60px;
+    padding: 30px 0 60px 500px;
+    border-bottom: 1px #ccc solid;
+    background-color: #f1f1f1 ;}
+
+
+
+.right .right-sou .nei input{
+    width: 40%;
+    border: solid 1px #ccc;
+    height: 35px; text-align: left;
+    padding-left: 6px; line-height: 35px;
+    margin-right: 10px;
+    border-radius: 10px;
+    color:#c0c0c0;
+    font-size: 12px;}
+
+/*-----------------------------右部分的表单----------------------------*/
+/*人员信息*/
+.renyuan{width: 99%;
+    height: 40px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-top:150px;
+    line-height: 40px;
+    padding-left: 10px;
+    margin-left: 6px;}
+
+
+/*表单部分*/
+#biaodan{padding: 5px;}
+#biaodan table tr th{ text-align: center}
+#biaodan table tr td{ line-height: 56px;}
+#biaodan>table{ text-align: center}
+#biaodan>table .zhao{ width: 50px; height: 80px;
+    background: url("../img/shuaige.jpg") no-repeat center;
+    background-size: 100%}
+
+.left .navleft{
+    width: 100%;
+    height: 600px;
+    margin-top:45px;}
+
+
+.left .navleft ul li{
+    width: 100%; height:55px;
+    line-height: 55px; font-size: 18px;
+    color:#95a0aa;
+    border-bottom: 1px #3b3b43 solid;
+    cursor: pointer;
+    letter-spacing:15px;}
+
+
+.left .navleft ul li:hover{background-color: #4aaff2; color: white;}
+.left .navleft ul li>span{ padding: 0 30px 0 40px; font-size: 24px;}
+.left .navleft ul .one{ background-color: #4aaff2; color: white;}
+.left .navleft ul li:nth-child(1){ border-top: solid 1px #3b3b43}
+/*------------------头部菜单---------------------------*/
+.handeRight{width:259px; height:60px; }
+.handeRight ul li{ width: 105px; height: 60px; float: left; border-right: solid 1px #ccc; text-align: center;
+    line-height: 60px;  cursor: pointer}
+
+
+/*------------------头像很部分-------------------*/
+.handeRight ul li:nth-child(2){width: 150px; text-align: left; position: relative; line-height:22px;}
+.handeRight ul li:nth-child(2)>img {position: absolute; left: 15px; top: 8px;}
+.handeRight ul li:nth-child(2)>.zi{position: absolute; left:70px; top: 5px; color: #c0c0c0}
+.handeRight ul li:nth-child(2)>.iconfont{position: absolute;right: 18px; top: 22px; font-size: 6px;}
+.handeRight ul li:nth-child(2)>.xiala{position: absolute; top: 58px; left: 20px; display: none;
+    background-color: white; border: solid 1px #ccc;  width: 135px; height:83px; border-top: none;}
+
+/*----------------------下拉修改密码-------------------------*/
+.handeRight ul li:nth-child(2) .xiala span{display: block; height: 40px;
+    width: 135px; line-height: 40px; text-align: center; cursor: pointer;}
+
+.handeRight ul li:nth-child(2) .xiala span:hover{background-color: #ccc}
+.handeRight ul li>span{ font-size: 35px;
+    color:#666 }
+.handeRight ul .ones{border-left: none;}
+.handeRight ul .admin{font-size: 14px;
+    line-height: 5px;
+    text-align: left}
+.luru{width: 100%;
+    background-color: #fff;
+    padding:35px; position: fixed;
+    padding-left: 65px;
+    border-top: 1px #ccc solid;
+    bottom: 0; left: 0;
+    display: none;
+}
+.luru .file{ display: inline-block; margin-right: 0;}
+#forms{ margin:  0 auto}
+.motai input{ height: 30px;}
+#forms input{ margin-right: 45px;}
+#six{ margin-right: 45px; }
+
+
+#preview{ margin-right: 35px;}
+/*查看*/
+#biaodan table tr td .chamo{ margin-top:160px;
+    padding-bottom: 35px;}
+#biaodan table tr td .chamo .touxiang{
+    width:100px;
+    height:150px;
+    background:url('../img/shuaige.jpg') no-repeat center;
+    background-size:100%; margin: 0 auto}
+
+
+#biaodan table tr td .xiu{ height:50px;}
+
+#deper,#name，#number，#phone{ }
+
+
+#deper1,#name1，#number1，#phone1{ border: 1px #c0c0c0 solid; border-radius: 10px;}
+
+
+/*-----------------弹出层代码-------------------------*/
+
+.tan{text-align: center; position: fixed; top: 20%; left: 37% ;display: none}
+.tan .xiu{ height: 45px; line-height: 45px;}
+.tan .touxiang{ height:150px; line-height:150px;}
+
+
+.tan2{text-align: center; position: fixed; top: 20%; left: 37% ;display: none}
+.tan2 .xiu{ height: 45px; line-height: 45px;}
+.tan2 .touxiang{ height:150px; line-height:150px;}
+
+
+.tan3{ position: fixed; top: 20%; left: 37% ;display: none}
+.tan3 .xiu{ height: 45px; line-height: 45px;}
+.tan3 .touxiang{ height:150px; line-height:150px;}
+
+
+
+.right .right-hande .touTianbumen{position: absolute; right: 18%; text-align: center; cursor: pointer; top: 7px; font-size: 12px; width:100px;}
+
+
+
+#paginationId{  height: 45px;font-size: 12px  }
+
+#paginationId a{display: inline-block; width: 40px; height: 40px; text-align: center;
+ line-height: 40px;border: 1px #ccc solid; margin-right: 6px}
+#paginationId span{border: 1px #ccc solid;margin-right: 6px}
+ #paginationId a:hover{background-color:#337ab7; color:#fff}
+ 
+ #paginationId .next{ width:50px;font-size: 12px }
+  #paginationId .prev{width:50px;font-size: 12px}
+
+ #paginationId .active{ display: inline-block;  width: 41px; height: 41px; text-align: center;
+ line-height: 40px;border: 1px #ececec solid;  background-color: #337ab7;color:#fff; padding: 2px}
+
+
+
+#paginationDeptId{  height: 45px;font-size: 12px  }
+
+#paginationDeptId a{display: inline-block; width: 40px; height: 40px; text-align: center;
+ line-height: 40px;border: 1px #ccc solid; margin-right: 6px}
+#paginationDeptId span{border: 1px #ccc solid;margin-right: 6px}
+#paginationDeptId a:hover{background-color:#337ab7; color:#fff}
+ #paginationDeptId .next{ width:50px;font-size: 12px }
+  #paginationDeptId .prev{width:50px;font-size: 12px}
+#paginationDeptId .active{ display: inline-block;  width: 41px; height: 41px; text-align: center;
+ line-height: 40px;border: 1px #ececec solid;  background-color: #337ab7;color:#fff; padding: 2px}
+
+
+#paginationNameId{ 	 height: 45px;font-size: 12px  }
+
+#paginationNameId a{display: inline-block; width: 40px; height: 40px; text-align: center;
+ line-height: 40px;border: 1px #ccc solid; margin-right: 6px}
+#paginationNameId span{border: 1px #ccc solid;margin-right: 6px}
+#paginationNameId a:hover{background-color:#337ab7; color:#fff}
+ #paginationNameId .next{ width:50px;font-size: 12px }
+  #paginationNameId .prev{width:50px;font-size: 12px}
+#paginationNameId .active{ display: inline-block;  width: 41px; height: 41px; text-align: center;
+ line-height: 40px;border: 1px #ececec solid;  background-color: #337ab7;color:#fff; padding: 2px}
+
+
+
+
+@media(max-width:1080px){
+    .left .navs li{font-size:14px}
+    .right .right-hande .touTianbumen{right: 28%;}
+}
+
+
+
+@media(max-width:1200px){
+    .left .navs li{font-size:14px}
+    .right .right-hande .touTianbumen{right: 28%;}
+}
+
+@media(max-width:992px){
+    .left .navs li{font-size:14px}
+    .right .right-hande .touTianbumen{right: 28%;}
+}
+
+@media(max-width:768px){
+    .left .navs li{font-size:14px}
+    .right .right-hande .touTianbumen{right: 28%;}
+}
+

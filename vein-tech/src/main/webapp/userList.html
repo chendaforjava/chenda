@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备管理</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="css/loginDialog.css">
+
+</head>
+<body  ng-app="myApp">
+<!------------------------------全部---------------------------->
+
+
+<div style="width:100%"; height:60px; background-color:#000;></div>
+
+<div  ng-controller="myCtrl">
+    <div class="left pull-left">
+        <h2 style="color: #fff; padding-left:45px; font-family:'汉仪菱心体简'; margin-top: 105px;" id="coporationName"></h2>
+        <!--导航兰-->
+        <div class="navs">
+            <ul class="nacs">
+                <a href="departmentManage.html"> <li><span class="iconfont icon-renyuan"></span>部门管理</li></a>
+                <a href="userManage.html"> <li><span class="iconfont icon-yonghu"></span>用户管理</li></a>
+                <a href="deviceStatus.html"><li><span class="iconfont icon-shebei"></span>设备管理</li></a>
+                <a href="veinCollent.html"><li><span class="iconfont icon-caijirenwu"></span>指静脉采集</li></a>
+                <a href="userList.html"><li   class="one"><span class="iconfont icon-xiangqing"></span>点名</li></a>
+                <a href="meetingManage.html"><li><span class="iconfont icon-xiangqing"></span>会议管理</li></a>
+                <a href="signWall.html"><li><span class="iconfont icon-xiangqing"></span>照片墙</li></a>
+            </ul>
+        </div>
+    </div>
+    <!-----------------------左边部分结束----------------------------->
+
+    <!--------------------页面的右边部分开始--------------->
+    <div class="right pull-right contt">
+        <!-------右边的头部-------->
+        <div class="right-hande">
+            <!--------------头部的应用-------------->
+
+            <div class="handeRight pull-right">
+                <ul>
+                    <li class="ones"><span class="iconfont icon-rizhi" style="color: #f1f1f1"></span></li>
+                    <li  class="tou"><img src="img/touxiang.png">
+                        <p class="zi"><span id="adminstratroId"></span><br><span>管理员</span></p>
+                        <span ng-click="toggle()" class="iconfont dianwo icon-fa-angle-down" style="color: #f1f1f1"></span>
+                        <!---------------管理员下拉------------------->
+
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </div>
+
+        <!--设备状态-->
+        <div class="row" style=" margin-top:65px;">
+            <div class="col-md-12">
+                <div style="width:15%; float: left">
+                    <select class="form-control" id="department"  name="Model" style=" margin-top: 20px;">
+                        <option value="0">全部</option>
+                    </select>
+                </div>
+                <!-- <button type="button" class="btn btn-default" style="margin-left: 30px;">开始点名</button> -->
+                <button type="button" class="btn btn-info" style="margin-left: 30px;" onclick="startSign();">开始点名</button>
+                <div class="col-md-12" style="border: 1px solid #ccc;  height:800px;padding: 10px;  overflow:scroll">
+                    <table class="table table-bordered table-striped table-hover">
+	                        <tbody id="leftTable" >
+	                        	<tr>
+	                            <th>编号</th>
+	                            <th>用户姓名</th>
+	                            <th>所属部门</th>
+	                            <th>模板数</th>
+	                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="js/angular.min.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bacck.js"></script>
+<script src="js/input.js"></script>
+<script src="js/userList.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/iconfont.js"></script>
+</body>
+</html>

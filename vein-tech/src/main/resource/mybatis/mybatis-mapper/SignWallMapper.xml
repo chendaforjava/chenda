@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SignWallMapper">
+	
+	<resultMap type="user" id="user">
+		<id column="U_ID" property="uId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="U_CITY" property="uCity"/>
+		<result column="U_NAME" property="uName"/>
+		<result column="U_ADDR" property="uAddr"/>
+		<result column="U_SEX" property="uSex"/>
+		<result column="U_PHONE" property="uPhone"/>
+		<result column="U_PROVINCE" property="uProvince"/>
+		<result column="DEP_ID" property="deptId"/>
+		<result column="U_VEIN_NUM" property="uVeinNum"/>
+		<result column="U_PHOTO_URL" property="uPhotoUrl"/>
+		<result column="JOB_NUMBER" property="ujobNum"/>
+	</resultMap>
+	
+	
+	
+	<resultMap type="schedule" id="schedule">
+		<id column="SCHEDULE_ID" property="scheduleId"/>
+		<result column="COR_ID" property="corId"/>
+		<result column="SCHEDULE_NAME" property="scheduleName"/>
+		<result column="PARTICIPANT_NUM" property="participantNum"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="START_TIME" property="startTime"/>
+		<result column="END_TIME" property="endTime"/>
+		<collection property="scheduleUserList" ofType="scheduleUser">
+			<result column="U_ID" property="scheduleId"/>
+			<result column="SCHEDULE_ID" property="uId"/>
+		</collection>
+	</resultMap>
+	
+	
+	<select id="loadSchedules" parameterType="java.lang.String" resultMap="schedule">
+		select
+				s.SCHEDULE_ID,s.COR_ID,s.SCHEDULE_NAME,
+				s.PARTICIPANT_NUM,s.ADDRESS,s.START_TIME,s.END_TIME,
+				su.SCHEDULE_ID,su.U_ID
+		from
+				TB_SCHEDULE s , TB_SCHEDULE_USER su
+		where
+				s.SCHEDULE_ID = su.SCHEDULE_ID
+		and
+				COR_ID = #{corId}
+		and
+				END_TIME &gt; sysdate
+	</select>
+	
+	
+	<select id="getScheduleUsers" parameterType="java.util.Map" resultMap="user">
+		select 
+			u.U_ID,u.U_NAME,u.DEP_ID,u.U_SEX,u.U_PHOTO_URL,u.JOB_NUMBER
+		from
+		  	tb_user u,tb_schedule s,tb_schedule_user su
+		where
+		 	u.U_ID = su.U_ID
+		and
+		  	s.SCHEDULE_ID = su.SCHEDULE_ID
+		and
+		  	s.SCHEDULE_ID = #{scheduleId}		
+	</select>
+	
+	<select id="signedUser" parameterType="java.util.Map" resultMap="user">
+		select
+				 u.U_ID,u.JOB_NUMBER
+		from
+				TB_USER u ,TB_SIGN s
+		where
+				u.U_ID = s.U_ID
+		and
+				s.SCHEDULE_ID = #{scheduleId}
+	</select>
+	
+	
+	
+	
+</mapper>
